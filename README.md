@@ -3,23 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title id="siteTitle">Just Vehicles</title>
+  <title>Just Vehicles - Sistema Completo</title>
   <style>
     /* Reset e base */
     * {
       box-sizing: border-box;
     }
-    body {
+    body, html {
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #121917;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
+      color: #d1f2a5;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    /* Tela login full screen */
+    #telaLogin {
+      position: fixed;
+      inset: 0;
+      background: #1b2a1f;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      gap: 15px;
+      box-shadow: inset 0 0 50px #34d058aa;
+      padding: 20px;
+    }
+    #telaLogin h1 {
+      margin: 0 0 15px;
+      font-size: 2.5rem;
+      user-select: none;
+      text-shadow: 0 0 10px #34d058cc;
+    }
+    #telaLogin input, #telaLogin select, #telaLogin button {
+      padding: 12px 18px;
+      font-size: 1.1rem;
+      border-radius: 25px;
+      border: none;
+      width: 280px;
+      max-width: 100%;
+      background: #18241a;
       color: #d1f2a5;
+      box-shadow: inset 0 0 8px #34d058;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+    }
+    #telaLogin input::placeholder {
+      color: #8abf7a;
+      font-weight: 400;
+    }
+    #telaLogin input:focus, #telaLogin select:focus {
+      outline: none;
+      background: #213121;
+      box-shadow: 0 0 12px #34d058;
+    }
+    #telaLogin button {
+      cursor: pointer;
+      box-shadow: 0 0 12px #34d058;
+      user-select: none;
+    }
+    #telaLogin button:hover {
+      background: #2fb44d;
+      box-shadow: 0 0 18px #34d058ff;
+    }
+    #telaLogin .mensagemErro {
+      color: #e84545;
+      font-weight: 700;
+      user-select: none;
+      margin-top: 5px;
+      height: 22px;
     }
 
+    /* App container (tudo depois do login) */
+    #appContainer {
+      flex-grow: 1;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Menu lateral */
+    aside#menuLateral {
+      width: 280px;
+      background-color: #1b2a1f;
+      box-shadow: inset -4px 0 15px rgba(52, 208, 88, 0.7);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      color: #d1f2a5;
+      overflow-y: auto;
+      user-select: none;
+    }
+    aside#menuLateral h2 {
+      margin: 0 0 10px;
+      font-size: 1.6rem;
+      border-bottom: 2px solid #34d058;
+      padding-bottom: 5px;
+    }
+    aside#menuLateral section {
+      border-top: 1px solid #2f4e22;
+      padding-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    aside#menuLateral label, aside#menuLateral select, aside#menuLateral input {
+      font-weight: 700;
+      background-color: #18241a;
+      color: #d1f2a5;
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 5px;
+    }
+    aside#menuLateral input[type="text"] {
+      font-weight: normal;
+    }
+    aside#menuLateral button {
+      background: #34d058;
+      border: none;
+      color: #121917;
+      padding: 10px;
+      border-radius: 25px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 10px #34d058cc;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+      user-select: none;
+    }
+    aside#menuLateral button:hover {
+      background: #2fb44d;
+      box-shadow: 0 0 18px #34d058ff;
+    }
+    aside#menuLateral .btnRemoverUser {
+      background: #e84545;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      margin-left: 10px;
+      box-shadow: 0 0 8px #e84545cc;
+      transition: background-color 0.3s ease;
+    }
+    aside#menuLateral .btnRemoverUser:hover {
+      background: #ff5555;
+      box-shadow: 0 0 12px #ff5555cc;
+    }
+
+    /* Header */
     header {
       background: #0f1a13;
       color: #d1f2a5;
@@ -32,17 +170,18 @@
       border-bottom: 2px solid #34d058;
       box-shadow: 0 2px 10px rgba(52, 208, 88, 0.4);
       position: relative;
-      z-index: 10;
+      user-select: none;
+      flex-shrink: 0;
     }
     header img {
-      height: 50px;
-      flex-shrink: 0;
+      height: 45px;
       filter: drop-shadow(0 0 3px #34d058);
     }
     .site-name {
       font-weight: 700;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       user-select: none;
+      flex-grow: 1;
     }
     .search-bar {
       padding: 10px 15px;
@@ -55,6 +194,7 @@
       color: #d1f2a5;
       box-shadow: inset 0 0 8px #34d058;
       transition: box-shadow 0.3s ease;
+      user-select: text;
     }
     .search-bar::placeholder {
       color: #8abf7a;
@@ -65,120 +205,26 @@
       background-color: #18241a;
     }
 
-    /* Botão 3 pontinhos fixo */
-    #btnConfig {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: #34d058;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 0 10px #34d058cc;
-      display: none; /* só aparece para adm e ceo */
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      padding: 6px 0;
-      z-index: 1000;
-    }
-    #btnConfig span {
-      display: block;
-      width: 6px;
-      height: 6px;
-      background-color: #121917;
-      border-radius: 50%;
-      box-shadow: 0 0 4px #121917;
-    }
-    #btnConfig:hover {
-      background: #2fb44d;
-      box-shadow: 0 0 18px #2fb44dcc;
-    }
-
-    /* Menu lateral de configurações */
-    #menuLateral {
-      position: fixed;
-      top: 0;
-      right: -300px;
-      width: 300px;
-      height: 100vh;
-      background-color: #1b2a1f;
-      box-shadow: -4px 0 15px rgba(52, 208, 88, 0.7);
-      transition: right 0.3s ease;
-      z-index: 999;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      color: #d1f2a5;
-      overflow-y: auto;
-    }
-    #menuLateral.ativo {
-      right: 0;
-    }
-    #menuLateral h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      border-bottom: 2px solid #34d058;
-      padding-bottom: 5px;
-    }
-    #menuLateral button {
-      background: #34d058;
-      border: none;
-      color: #121917;
-      padding: 10px;
-      border-radius: 25px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 0 10px #34d058cc;
-      transition: background-color 0.3s ease;
-    }
-    #menuLateral button:hover {
-      background: #2fb44d;
-      box-shadow: 0 0 18px #34d058ff;
-    }
-    #menuLateral .fecharMenu {
-      background: transparent;
-      color: #d1f2a5;
-      font-size: 1.4rem;
-      font-weight: 900;
-      align-self: flex-end;
-      cursor: pointer;
-      border: none;
-      padding: 0 5px;
-    }
-    #menuLateral label, #menuLateral select, #menuLateral input {
-      font-weight: 700;
-      background-color: #18241a;
-      color: #d1f2a5;
-      border: none;
-      border-radius: 8px;
-      padding: 8px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: 5px;
-    }
-    #menuLateral input[type="text"] {
-      font-weight: normal;
-    }
-
-    /* Lista de carros */
-    main {
+    /* Área principal carros */
+    main#mainContent {
       flex-grow: 1;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
       padding: 15px 20px 30px;
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
       width: 100%;
       box-sizing: border-box;
+      overflow-y: auto;
+    }
+    #listaCarros {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 10px;
+      user-select: none;
     }
     .car-card {
       background: #1b2a1f;
-      width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 4 / 3;
       padding: 15px;
       border-radius: 20px;
       box-shadow:
@@ -191,7 +237,6 @@
       color: #d1f2a5;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: default;
-      user-select: none;
       position: relative;
       overflow: hidden;
     }
@@ -204,8 +249,8 @@
     .car-card img {
       width: 100%;
       height: auto;
-      max-height: 50%;
-      object-fit: cover;
+      max-height: 140px;
+      object-fit: contain;
       border-radius: 15px;
       margin-bottom: 15px;
       filter: drop-shadow(0 0 8px #34d058);
@@ -218,7 +263,7 @@
     }
     .car-card h3 {
       margin: 0 0 8px;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
       text-shadow: 0 0 8px #34d058cc;
       user-select: text;
@@ -236,8 +281,7 @@
     .car-card p:hover {
       color: #34d058;
     }
-
-    /* Botão remover */
+    /* Botão remover carro */
     .btnRemover {
       position: absolute;
       top: 10px;
@@ -261,11 +305,7 @@
 
     /* Área adicionar carro */
     #areaAdicionarCarro {
-      display: none;
-      margin: 10px 20px 20px;
-      max-width: 1200px;
-      width: 100%;
-      box-sizing: border-box;
+      margin: 20px 0 10px;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -275,10 +315,10 @@
       padding: 15px 20px;
       border-radius: 20px;
       box-shadow: 0 0 12px #34d058aa inset;
+      user-select: none;
     }
     #areaAdicionarCarro select,
     #areaAdicionarCarro input[type="text"],
-    #areaAdicionarCarro input[type="file"],
     #areaAdicionarCarro button {
       font-weight: 700;
       background-color: #1f2a20;
@@ -289,20 +329,31 @@
       cursor: pointer;
       box-shadow: inset 0 0 8px #34d058;
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: text;
     }
     #areaAdicionarCarro input[type="text"],
     #areaAdicionarCarro select {
       flex-grow: 1;
-      max-width: 200px;
-    }
-    #areaAdicionarCarro input[type="file"] {
-      flex-grow: 1;
-      max-width: 180px;
-      cursor: pointer;
+      max-width: 220px;
     }
     #areaAdicionarCarro button:hover {
       background-color: #2fb44d;
       box-shadow: 0 0 18px #34d058ff;
+    }
+
+    /* Logs */
+    #logs {
+      background: #18241a;
+      padding: 15px;
+      border-radius: 15px;
+      max-height: 250px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      color: #a3d19c;
+      user-select: text;
+      white-space: pre-wrap;
+      box-shadow: inset 0 0 12px #34d058aa;
+      font-family: monospace;
     }
 
     /* Scrollbar */
@@ -318,326 +369,399 @@
       border-radius: 20px;
       border: 2px solid #121917;
     }
+
+    /* Mensagem boas vindas */
+    #boasVindas {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #34d058;
+      text-shadow: 0 0 10px #34d058aa;
+      user-select: none;
+    }
+
+    /* Responsividade */
+    @media(max-width: 700px) {
+      aside#menuLateral {
+        width: 100%;
+        max-height: 250px;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      #areaAdicionarCarro {
+        flex-direction: column;
+      }
+      #areaAdicionarCarro input[type="text"], #areaAdicionarCarro select {
+        max-width: 100%;
+      }
+      #listaCarros {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <img src="https://cdn.discordapp.com/attachments/1395776398869790850/1404427449470685254/dbd1dd651d70777c7c91d9051d8856ca-removebg-preview.png?ex=689b267c&is=6899d4fc&hm=804bdf797d62dbcae7e8f5df5897c670a697fae276b23fac66bc727aaee85310&" alt="Logo" />
-  <div class="site-name" id="siteName">Just Vehicles</div>
-  <input
-    type="text"
-    class="search-bar"
-    placeholder="Pesquisar carro..."
-    oninput="filtrarCarros()"
-    aria-label="Pesquisar carro"
-  />
-</header>
+  <!-- Tela Login -->
+  <section id="telaLogin" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
+    <h1 id="tituloLogin">Login - Just Vehicles</h1>
+    <input type="text" id="inputNome" placeholder="Digite seu nome" aria-label="Nome do usuário" autocomplete="off" />
+    <select id="selectPermissao" aria-label="Selecionar permissão do usuário">
+      <option value="randola">Usuário comum</option>
+      <option value="adm">Administrador</option>
+      <option value="ceo">CEO</option>
+    </select>
+    <button id="btnEntrar" aria-label="Entrar no sistema">Entrar</button>
+    <div class="mensagemErro" role="alert" aria-live="assertive" id="mensagemErro"></div>
+  </section>
 
-<!-- Botão 3 pontinhos fixo para abrir menu -->
-<button id="btnConfig" aria-label="Abrir configurações" title="Configurações" style="display:none;">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
+  <!-- App Container -->
+  <div id="appContainer" style="display:none;">
+    <!-- Menu lateral -->
+    <aside id="menuLateral" role="navigation" aria-label="Menu lateral de navegação">
+      <div id="boasVindas" aria-live="polite"></div>
 
-<!-- Menu lateral -->
-<aside id="menuLateral" role="menu" aria-label="Menu de configurações administrativas">
-  <button class="fecharMenu" aria-label="Fechar menu">&times;</button>
-  <h2>Configurações</h2>
+      <section id="secUsuarios" style="display:none;">
+        <h2>Gerenciar Usuários (CEO)</h2>
+        <div>
+          <label for="novoUserNome">Nome do novo usuário:</label>
+          <input type="text" id="novoUserNome" aria-label="Nome do novo usuário" autocomplete="off" />
+        </div>
+        <div>
+          <label for="novoUserPermissao">Permissão do novo usuário:</label>
+          <select id="novoUserPermissao" aria-label="Permissão do novo usuário">
+            <option value="randola">Usuário comum</option>
+            <option value="adm">Administrador</option>
+            <option value="ceo">CEO</option>
+          </select>
+        </div>
+        <button id="btnAddUser" aria-label="Adicionar novo usuário">Adicionar Usuário</button>
 
-  <label for="selectCargo" style="font-weight: 700;">Selecione o cargo do usuário atual:</label>
-  <select id="selectCargo" aria-label="Selecionar cargo do usuário atual" style="padding: 8px; border-radius: 8px; border: none; background-color: #18241a; color: #d1f2a5;">
-    <option value="ceo">Ceo (total)</option>
-    <option value="adm">Administrador (adm)</option>
-    <option value="randola">Usuário comum (randola)</option>
-  </select>
+        <h3>Usuários existentes:</h3>
+        <ul id="listaUsuarios" style="list-style:none; padding-left:0; max-height:150px; overflow-y:auto; color:#d1f2a5;"></ul>
+      </section>
 
-  <button id="btnCopiarLista" aria-label="Copiar lista de nomes">Copiar lista de nomes</button>
+      <section id="secLogs" style="display:none;">
+        <h2>Logs de Atividades (CEO)</h2>
+        <div id="logs" tabindex="0" aria-label="Logs das atividades"></div>
+      </section>
+    </aside>
 
-  <hr style="border-color:#34d05855; margin: 15px 0;" />
+    <!-- Conteúdo principal -->
+    <main id="mainContent" tabindex="0" role="main" aria-label="Conteúdo principal">
+      <header>
+        <img src="https://cdn.discordapp.com/attachments/1395776398869790850/1404427449470685254/dbd1dd651d70777c7c91d9051d8856ca-removebg-preview.png?ex=689b267c&is=6899d4fc&hm=804bdf797d62dbcae7e8f5df5897c670a697fae276b23fac66bc727aaee85310&" alt="Logo Just Vehicles" />
+        <div class="site-name">Just Vehicles</div>
+        <input
+          type="text"
+          id="inputBuscarCarro"
+          class="search-bar"
+          placeholder="Pesquisar carro..."
+          aria-label="Pesquisar carro"
+        />
+      </header>
 
-  <h2>Alterar permissão de usuário</h2>
-  <label for="usuarioNome">Nome do usuário:</label>
-  <input type="text" id="usuarioNome" placeholder="Digite o nome do usuário" aria-label="Nome do usuário" />
+      <div id="areaAdicionarCarro" aria-label="Adicionar novo carro" style="display:none;">
+        <input type="text" id="novoNomeCarro" placeholder="Nome do carro" aria-label="Nome do carro" autocomplete="off" />
+        <select id="novaCategoriaCarro" aria-label="Categoria do carro">
+          <option value="SUV">SUV</option>
+          <option value="Sedan">Sedan</option>
+          <option value="Esportivo">Esportivo</option>
+          <option value="Pickup">Pickup</option>
+        </select>
+        <input type="text" id="novaImagemCarro" placeholder="URL da imagem do carro" aria-label="URL da imagem do carro" autocomplete="off" />
+        <button id="btnAdicionarCarro" aria-label="Adicionar carro">Adicionar Carro</button>
+      </div>
 
-  <label for="novaPermissao">Nova permissão:</label>
-  <select id="novaPermissao" aria-label="Nova permissão do usuário">
-    <option value="ceo">Ceo (total)</option>
-    <option value="adm">Administrador (adm)</option>
-    <option value="randola">Usuário comum (randola)</option>
-  </select>
-
-  <button id="btnAtualizarPermissao" aria-label="Atualizar permissão">Atualizar Permissão</button>
-</aside>
-
-<div id="areaAdicionarCarro" role="region" aria-label="Filtros e adicionar carro">
-  <select id="categoriaFiltro" onchange="filtrarCarros()" aria-label="Filtrar por categoria">
-    <option value="">Todas Categorias</option>
-    <option value="SUV">SUV</option>
-    <option value="Sedan">Sedan</option>
-    <option value="Esportivo">Esportivo</option>
-    <option value="Pickup">Pickup</option>
-  </select>
-
-  <input type="text" id="novoNome" placeholder="Nome do carro" aria-label="Nome do carro" />
-  <select id="novaCategoria" aria-label="Categoria do carro">
-    <option value="SUV">SUV</option>
-    <option value="Sedan">Sedan</option>
-    <option value="Esportivo">Esportivo</option>
-    <option value="Pickup">Pickup</option>
-  </select>
-  <input type="file" id="novaImagem" accept="image/*" aria-label="Imagem do carro" />
-  <button onclick="adicionarCarro()" aria-label="Adicionar carro">Adicionar Carro</button>
-</div>
-
-<main id="listaCarros" aria-live="polite" aria-relevant="additions removals">
-  <!-- Carros iniciais -->
-  <div class="car-card" data-nome="BMW X6" data-categoria="SUV">
-    <img src="https://source.unsplash.com/200x150/?bmw" alt="BMW X6" />
-    <h3>BMW X6</h3>
-    <p title="Clique para copiar o nome do veículo">SUV</p>
+      <section id="listaCarros" aria-live="polite" aria-relevant="additions removals">
+        <!-- Carros aqui -->
+      </section>
+    </main>
   </div>
-  <div class="car-card" data-nome="Ferrari F8" data-categoria="Esportivo">
-    <img src="https://source.unsplash.com/200x150/?ferrari" alt="Ferrari F8" />
-    <h3>Ferrari F8</h3>
-    <p title="Clique para copiar o nome do veículo">Esportivo</p>
-  </div>
-  <div class="car-card" data-nome="Toyota Hilux" data-categoria="Pickup">
-    <img src="https://source.unsplash.com/200x150/?pickup" alt="Toyota Hilux" />
-    <h3>Toyota Hilux</h3>
-    <p title="Clique para copiar o nome do veículo">Pickup</p>
-  </div>
-</main>
 
-<script>
-  // Usuário atual e permissão (inicial)
-  let usuarioAtual = {
-    nome: "MonarckDev",
-    permissao: "ceo" // pode ser 'ceo', 'adm', 'randola'
-  };
-
-  const btnConfig = document.getElementById("btnConfig");
-  const menuLateral = document.getElementById("menuLateral");
-  const areaAdicionar = document.getElementById("areaAdicionarCarro");
-  const selectCargo = document.getElementById("selectCargo");
-  const listaCarros = document.getElementById("listaCarros");
-
-  // Inputs para alterar permissão
-  const usuarioNomeInput = document.getElementById("usuarioNome");
-  const novaPermissaoSelect = document.getElementById("novaPermissao");
-  const btnAtualizarPermissao = document.getElementById("btnAtualizarPermissao");
-
-  // Atualiza interface baseado na permissão
-  function atualizarInterface() {
-    if (usuarioAtual.permissao === "ceo") {
-      btnConfig.style.display = "flex";
-      areaAdicionar.style.display = "flex";
-      mostrarBotoesRemover(true);
-    } else if (usuarioAtual.permissao === "adm") {
-      btnConfig.style.display = "flex";
-      areaAdicionar.style.display = "flex";
-      mostrarBotoesRemover(true);
-    } else if (usuarioAtual.permissao === "randola") {
-      btnConfig.style.display = "none";
-      areaAdicionar.style.display = "none";
-      mostrarBotoesRemover(false);
+  <script>
+    // Inicializa usuários no localStorage (se ainda não existir)
+    if (!localStorage.getItem("usuarios")) {
+      const usuariosIniciais = [
+        { nome: "Monarck.Dev", permissao: "ceo" },
+        { nome: "adm", permissao: "adm" },
+        { nome: "user", permissao: "randola" }
+      ];
+      localStorage.setItem("usuarios", JSON.stringify(usuariosIniciais));
     }
 
-    // Atualiza o select no menu lateral para refletir o usuário atual
-    selectCargo.value = usuarioAtual.permissao;
-  }
+    // Inicializa carros no localStorage (se não existir)
+    if (!localStorage.getItem("carros")) {
+      const carrosIniciais = [
+        { nome: "Jeep Compass", categoria: "SUV", imagem: "https://cdn.discordapp.com/attachments/1395776398869790850/1404382920414238338/jeep_compass-removebg-preview.png" },
+        { nome: "Honda Civic", categoria: "Sedan", imagem: "https://cdn.discordapp.com/attachments/1395776398869790850/1404382922776828422/civic-removebg-preview.png" },
+        { nome: "Ferrari F8", categoria: "Esportivo", imagem: "https://cdn.discordapp.com/attachments/1395776398869790850/1404382919191663656/ferrari-removebg-preview.png" }
+      ];
+      localStorage.setItem("carros", JSON.stringify(carrosIniciais));
+    }
 
-  // Mostra ou esconde os botões remover nos cards
-  function mostrarBotoesRemover(mostrar) {
-    if (mostrar) {
-      // Adiciona botão remover em todos os carros que ainda não tem
-      listaCarros.querySelectorAll(".car-card").forEach(card => {
-        if (!card.querySelector(".btnRemover")) {
-          const btn = document.createElement("button");
-          btn.className = "btnRemover";
-          btn.title = "Remover carro";
-          btn.textContent = "×";
-          btn.addEventListener("click", () => {
-            if(confirm(`Remover o carro "${card.dataset.nome}"?`)) {
-              card.remove();
+    // Inicializa logs (array de strings) no localStorage
+    if (!localStorage.getItem("logs")) {
+      localStorage.setItem("logs", JSON.stringify([]));
+    }
+
+    // Variáveis globais
+    let usuarios = JSON.parse(localStorage.getItem("usuarios"));
+    let carros = JSON.parse(localStorage.getItem("carros"));
+    let logs = JSON.parse(localStorage.getItem("logs"));
+    let usuarioAtual = null;
+
+    // Elementos DOM
+    const telaLogin = document.getElementById("telaLogin");
+    const inputNome = document.getElementById("inputNome");
+    const selectPermissao = document.getElementById("selectPermissao");
+    const btnEntrar = document.getElementById("btnEntrar");
+    const mensagemErro = document.getElementById("mensagemErro");
+
+    const appContainer = document.getElementById("appContainer");
+    const boasVindas = document.getElementById("boasVindas");
+
+    const secUsuarios = document.getElementById("secUsuarios");
+    const listaUsuarios = document.getElementById("listaUsuarios");
+    const btnAddUser = document.getElementById("btnAddUser");
+    const novoUserNome = document.getElementById("novoUserNome");
+    const novoUserPermissao = document.getElementById("novoUserPermissao");
+
+    const secLogs = document.getElementById("secLogs");
+    const logsDiv = document.getElementById("logs");
+
+    const areaAdicionarCarro = document.getElementById("areaAdicionarCarro");
+    const novoNomeCarro = document.getElementById("novoNomeCarro");
+    const novaCategoriaCarro = document.getElementById("novaCategoriaCarro");
+    const novaImagemCarro = document.getElementById("novaImagemCarro");
+    const btnAdicionarCarro = document.getElementById("btnAdicionarCarro");
+
+    const listaCarros = document.getElementById("listaCarros");
+    const inputBuscarCarro = document.getElementById("inputBuscarCarro");
+
+    // Função para salvar usuários no localStorage
+    function salvarUsuarios() {
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    }
+
+    // Função para salvar carros no localStorage
+    function salvarCarros() {
+      localStorage.setItem("carros", JSON.stringify(carros));
+    }
+
+    // Função para salvar logs no localStorage
+    function salvarLogs() {
+      localStorage.setItem("logs", JSON.stringify(logs));
+    }
+
+    // Função para adicionar log
+    function adicionarLog(texto) {
+      const dataHora = new Date().toLocaleString();
+      const logTexto = `[${dataHora}] ${texto}`;
+      logs.push(logTexto);
+      if (logs.length > 100) logs.shift(); // mantém máximo 100 logs
+      salvarLogs();
+      atualizarLogs();
+    }
+
+    // Atualiza área logs
+    function atualizarLogs() {
+      if (!secLogs.style.display || secLogs.style.display === "none") return;
+      logsDiv.textContent = logs.join("\n");
+      logsDiv.scrollTop = logsDiv.scrollHeight;
+    }
+
+    // Atualiza lista de usuários na interface (para CEO)
+    function atualizarListaUsuarios() {
+      listaUsuarios.innerHTML = "";
+      usuarios.forEach((u, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${u.nome} [${u.permissao}]`;
+        if (u.nome !== usuarioAtual.nome) {
+          const btnRemover = document.createElement("button");
+          btnRemover.textContent = "X";
+          btnRemover.className = "btnRemoverUser";
+          btnRemover.title = `Remover usuário ${u.nome}`;
+          btnRemover.onclick = () => {
+            if (confirm(`Tem certeza que deseja remover o usuário ${u.nome}?`)) {
+              usuarios.splice(i, 1);
+              salvarUsuarios();
+              adicionarLog(`${usuarioAtual.nome} removeu o usuário ${u.nome}`);
+              atualizarListaUsuarios();
             }
-          });
-          card.appendChild(btn);
+          };
+          li.appendChild(btnRemover);
+        } else {
+          const span = document.createElement("span");
+          span.style.fontStyle = "italic";
+          span.style.color = "#8abf7a";
+          span.textContent = " (você)";
+          li.appendChild(span);
         }
+        listaUsuarios.appendChild(li);
       });
-    } else {
-      // Remove todos os botões remover
-      listaCarros.querySelectorAll(".btnRemover").forEach(btn => btn.remove());
     }
-  }
 
-  // Inicializa interface e select
-  function init() {
-    selectCargo.value = usuarioAtual.permissao;
-    atualizarInterface();
-  }
-  init();
+    // Atualiza lista de carros na interface (aplicando filtro)
+    function atualizarListaCarros(filtro = "") {
+      listaCarros.innerHTML = "";
+      const filtroLower = filtro.toLowerCase();
+      const carrosFiltrados = carros.filter(c => c.nome.toLowerCase().includes(filtroLower) || c.categoria.toLowerCase().includes(filtroLower));
+      if (carrosFiltrados.length === 0) {
+        const noMsg = document.createElement("p");
+        noMsg.textContent = "Nenhum carro encontrado.";
+        noMsg.style.color = "#e84545";
+        noMsg.style.textAlign = "center";
+        noMsg.style.fontWeight = "700";
+        listaCarros.appendChild(noMsg);
+        return;
+      }
+      carrosFiltrados.forEach((carro, index) => {
+        const card = document.createElement("article");
+        card.className = "car-card";
+        card.setAttribute("tabindex", "0");
 
-  // Troca o cargo ao mudar no select do menu lateral
-  selectCargo.addEventListener("change", () => {
-    usuarioAtual.permissao = selectCargo.value;
-    atualizarInterface();
-    menuLateral.classList.remove("ativo");
-  });
+        const img = document.createElement("img");
+        img.src = carro.imagem;
+        img.alt = `Imagem do carro ${carro.nome}`;
+        img.loading = "lazy";
+        card.appendChild(img);
 
-  // Abrir e fechar menu lateral
-  btnConfig.addEventListener("click", () => {
-    menuLateral.classList.toggle("ativo");
-  });
-  menuLateral.querySelector(".fecharMenu").addEventListener("click", () => {
-    menuLateral.classList.remove("ativo");
-  });
+        const titulo = document.createElement("h3");
+        titulo.textContent = carro.nome;
+        card.appendChild(titulo);
 
-  // Copiar lista de nomes no menu lateral (adm e ceo)
-  document.getElementById("btnCopiarLista").addEventListener("click", () => {
-    if (usuarioAtual.permissao === "randola") {
-      alert("Você não tem permissão para esta ação.");
-      return;
+        const cat = document.createElement("p");
+        cat.textContent = `Categoria: ${carro.categoria}`;
+        card.appendChild(cat);
+
+        // Só pode remover se for adm ou ceo
+        if (usuarioAtual.permissao === "adm" || usuarioAtual.permissao === "ceo") {
+          const btnRemoverCarro = document.createElement("button");
+          btnRemoverCarro.className = "btnRemover";
+          btnRemoverCarro.title = `Remover o carro ${carro.nome}`;
+          btnRemoverCarro.textContent = "✖";
+          btnRemoverCarro.onclick = () => {
+            if (confirm(`Remover o carro "${carro.nome}"?`)) {
+              carros.splice(index, 1);
+              salvarCarros();
+              adicionarLog(`${usuarioAtual.nome} removeu o carro ${carro.nome}`);
+              atualizarListaCarros(inputBuscarCarro.value);
+            }
+          };
+          card.appendChild(btnRemoverCarro);
+        }
+        listaCarros.appendChild(card);
+      });
     }
-    const carros = document.querySelectorAll(".car-card");
-    let nomes = [];
-    carros.forEach(carro => {
-      nomes.push(carro.dataset.nome);
+
+    // Login: verifica se usuário existe e permissao bate
+    function login(nome, permissao) {
+      if (!nome.trim()) {
+        mensagemErro.textContent = "Digite seu nome!";
+        return false;
+      }
+      const usuario = usuarios.find(u => u.nome.toLowerCase() === nome.trim().toLowerCase());
+      if (!usuario) {
+        mensagemErro.textContent = "Usuário não encontrado!";
+        return false;
+      }
+      if (usuario.permissao !== permissao) {
+        mensagemErro.textContent = "Permissão incorreta para este usuário!";
+        return false;
+      }
+      usuarioAtual = usuario;
+      mensagemErro.textContent = "";
+      return true;
+    }
+
+    // Faz o login e mostra app
+    btnEntrar.addEventListener("click", () => {
+      const nome = inputNome.value.trim();
+      const permissao = selectPermissao.value;
+
+      if (login(nome, permissao)) {
+        telaLogin.style.display = "none";
+        appContainer.style.display = "flex";
+        boasVindas.textContent = `Bem-vindo(a), ${usuarioAtual.nome} [${usuarioAtual.permissao.toUpperCase()}]!`;
+        carregarInterface();
+        adicionarLog(`${usuarioAtual.nome} entrou no sistema como ${usuarioAtual.permissao}`);
+      }
     });
-    const texto = nomes.join("\n");
-    navigator.clipboard.writeText(texto).then(() => {
-      alert("Lista de nomes copiada para área de transferência!");
-    }).catch(() => {
-      alert("Erro ao copiar lista.");
-    });
-  });
 
-  // Filtrar carros pela busca e categoria
-  function filtrarCarros() {
-    const busca = document.querySelector(".search-bar").value.toLowerCase();
-    const categoria = document.getElementById("categoriaFiltro")?.value || "";
-    const carros = document.querySelectorAll(".car-card");
-
-    carros.forEach(carro => {
-      const nome = carro.dataset.nome.toLowerCase();
-      const cat = carro.dataset.categoria;
-
-      if ((nome.includes(busca) || busca === "") &&
-          (categoria === "" || cat === categoria)) {
-        carro.style.display = "flex";
+    // Carrega interface de acordo com permissão
+    function carregarInterface() {
+      // CEO vê aba de usuários e logs, pode adicionar/remover usuários e ver logs
+      if (usuarioAtual.permissao === "ceo") {
+        secUsuarios.style.display = "block";
+        secLogs.style.display = "block";
+        areaAdicionarCarro.style.display = "flex";
+        atualizarListaUsuarios();
+        atualizarLogs();
       } else {
-        carro.style.display = "none";
+        secUsuarios.style.display = "none";
+        secLogs.style.display = "none";
+        // ADM pode adicionar/remover carros
+        if (usuarioAtual.permissao === "adm") {
+          areaAdicionarCarro.style.display = "flex";
+        } else {
+          areaAdicionarCarro.style.display = "none";
+        }
       }
+      atualizarListaCarros();
+    }
+
+    // Adiciona novo usuário (CEO somente)
+    btnAddUser.addEventListener("click", () => {
+      if (usuarioAtual.permissao !== "ceo") return alert("Somente CEO pode adicionar usuários!");
+      const nomeNovo = novoUserNome.value.trim();
+      const permissaoNova = novoUserPermissao.value;
+
+      if (!nomeNovo) return alert("Digite o nome do usuário!");
+      if (usuarios.find(u => u.nome.toLowerCase() === nomeNovo.toLowerCase())) {
+        return alert("Usuário já existe!");
+      }
+      usuarios.push({ nome: nomeNovo, permissao: permissaoNova });
+      salvarUsuarios();
+      adicionarLog(`${usuarioAtual.nome} adicionou o usuário ${nomeNovo} como ${permissaoNova}`);
+      atualizarListaUsuarios();
+      novoUserNome.value = "";
+      novoUserPermissao.value = "randola";
     });
-  }
 
-  // Copiar nome do veículo ao clicar na categoria (texto <p>) - somente adm e ceo podem copiar
-  listaCarros.addEventListener("click", function(e) {
-    if (e.target.tagName.toLowerCase() === "p" && e.target.parentElement.classList.contains("car-card")) {
-      if(usuarioAtual.permissao === "adm" || usuarioAtual.permissao === "ceo") {
-        const nomeVeiculo = e.target.parentElement.dataset.nome;
-        navigator.clipboard.writeText(nomeVeiculo).then(() => {
-          alert(`Nome do veículo "${nomeVeiculo}" copiado para a área de transferência!`);
-        }).catch(() => {
-          alert("Erro ao copiar o nome do veículo.");
-        });
+    // Adicionar carro (adm e ceo)
+    btnAdicionarCarro.addEventListener("click", () => {
+      if (usuarioAtual.permissao !== "adm" && usuarioAtual.permissao !== "ceo") {
+        alert("Você não tem permissão para adicionar carros!");
+        return;
       }
-    }
-  });
+      const nomeCarro = novoNomeCarro.value.trim();
+      const categoriaCarro = novaCategoriaCarro.value;
+      const imagemCarro = novaImagemCarro.value.trim();
 
-  // Função para adicionar carro (disponível para adm e ceo)
-  function adicionarCarro() {
-    if(usuarioAtual.permissao !== "adm" && usuarioAtual.permissao !== "ceo") {
-      alert("Você não tem permissão para adicionar carros.");
-      return;
-    }
-
-    const nomeInput = document.getElementById("novoNome");
-    const categoriaInput = document.getElementById("novaCategoria");
-    const imagemInput = document.getElementById("novaImagem");
-
-    const nome = nomeInput.value.trim();
-    const categoria = categoriaInput.value;
-    const arquivoImagem = imagemInput.files[0];
-
-    if (!nome) {
-      alert("Por favor, informe o nome do carro.");
-      return;
-    }
-    if (!categoria) {
-      alert("Por favor, selecione a categoria do carro.");
-      return;
-    }
-    if (!arquivoImagem) {
-      alert("Por favor, selecione uma imagem para o carro.");
-      return;
-    }
-
-    const leitor = new FileReader();
-    leitor.onload = function(event) {
-      const urlImagem = event.target.result;
-
-      // Criar novo card
-      const novoCard = document.createElement("div");
-      novoCard.className = "car-card";
-      novoCard.dataset.nome = nome;
-      novoCard.dataset.categoria = categoria;
-
-      novoCard.innerHTML = `
-        <img src="${urlImagem}" alt="${nome}" />
-        <h3>${nome}</h3>
-        <p title="Clique para copiar o nome do veículo">${categoria}</p>
-      `;
-
-      // Se tiver permissão para remover, adiciona o botão remover
-      if (usuarioAtual.permissao === "adm" || usuarioAtual.permissao === "ceo") {
-        const btnRemover = document.createElement("button");
-        btnRemover.className = "btnRemover";
-        btnRemover.title = "Remover carro";
-        btnRemover.textContent = "×";
-        btnRemover.addEventListener("click", () => {
-          if (confirm(`Remover o carro "${nome}"?`)) {
-            novoCard.remove();
-          }
-        });
-        novoCard.appendChild(btnRemover);
+      if (!nomeCarro || !imagemCarro) {
+        alert("Preencha nome e URL da imagem do carro.");
+        return;
       }
 
-      listaCarros.appendChild(novoCard);
+      carros.push({ nome: nomeCarro, categoria: categoriaCarro, imagem: imagemCarro });
+      salvarCarros();
+      adicionarLog(`${usuarioAtual.nome} adicionou o carro ${nomeCarro} (${categoriaCarro})`);
+      atualizarListaCarros(inputBuscarCarro.value);
+      novoNomeCarro.value = "";
+      novaCategoriaCarro.value = "SUV";
+      novaImagemCarro.value = "";
+    });
 
-      // Limpar inputs
-      nomeInput.value = "";
-      categoriaInput.value = "";
-      imagemInput.value = "";
+    // Pesquisa carros ao digitar
+    inputBuscarCarro.addEventListener("input", () => {
+      atualizarListaCarros(inputBuscarCarro.value);
+    });
 
-      alert(`Carro "${nome}" adicionado com sucesso!`);
-      filtrarCarros();
-    };
+    // Inicializa foco
+    inputNome.focus();
 
-    leitor.readAsDataURL(arquivoImagem);
-  }
-
-  // Atualizar permissão do usuário (simulação simples)
-  btnAtualizarPermissao.addEventListener("click", () => {
-    const nomeUsuario = usuarioNomeInput.value.trim();
-    const novaPermissao = novaPermissaoSelect.value;
-
-    if (!nomeUsuario) {
-      alert("Por favor, digite o nome do usuário.");
-      return;
-    }
-
-    // Simulação: só permite alterar permissão do usuário atual
-    if (nomeUsuario.toLowerCase() === usuarioAtual.nome.toLowerCase()) {
-      usuarioAtual.permissao = novaPermissao;
-      atualizarInterface();
-      alert(`Permissão do usuário "${nomeUsuario}" atualizada para "${novaPermissao}".`);
-    } else {
-      alert(`Usuário "${nomeUsuario}" não encontrado (simulação).`);
-    }
-  });
-</script>
+  </script>
 
 </body>
 </html>
